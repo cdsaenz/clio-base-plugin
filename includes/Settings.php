@@ -7,11 +7,11 @@ defined('ABSPATH') || exit;
 /**
  * Manages the plugin's single option row and the Settings admin page.
  *
- * Option key: Plugin::OPTION  (array)
+ * Option key: Plugin::OPTION  (array), one row shared by every tab
  *
- *   greeting                  string  text shown by the shortcode
- *   frontend_enabled          bool    shortcode outputs + front assets load
- *   delete_data_on_uninstall  bool    uninstall.php removes all plugin data
+ *   greeting                  string  [general]   text shown by the shortcode
+ *   frontend_enabled          bool    [advanced]  shortcode outputs + front assets load
+ *   delete_data_on_uninstall  bool    [advanced]  uninstall.php removes all plugin data
  */
 class Settings
 {
@@ -49,8 +49,9 @@ class Settings
     public static function tabs(): array
     {
         return apply_filters(Plugin::PREFIX . '_settings_tabs', [
-            'general' => __('General', 'clio-base-plugin'),
-            'about'   => __('About', 'clio-base-plugin'),
+            'general'  => __('General', 'clio-base-plugin'),
+            'advanced' => __('Advanced', 'clio-base-plugin'),
+            'about'    => __('About', 'clio-base-plugin'),
         ]);
     }
 
@@ -92,9 +93,15 @@ class Settings
         $tab     = sanitize_key($_POST['clio_tab'] ?? 'general');
         $current = get_option(Plugin::OPTION, []);
 
+        // Each tab's form only posts its own fields, so each sanitizer must return
+        // only its own keys. They're merged over the stored row below, which keeps
+        // every other tab's values. Returning another tab's keys (or saving the
+        // whole row from $_POST) would wipe them: an unchecked checkbox that isn't
+        // in the form looks exactly like one the user just unchecked.
         $incoming = match ($tab) {
-            'general' => $this->sanitizeGeneral($_POST),
-            default   => [],
+            'general'  => $this->sanitizeGeneral($_POST),
+            'advanced' => $this->sanitizeAdvanced($_POST),
+            default    => [],
         };
 
         // Extra tabs added via the tabs filter sanitize their own keys here.
@@ -112,7 +119,13 @@ class Settings
     private function sanitizeGeneral(array $post): array
     {
         return [
-            'greeting'                 => sanitize_text_field(wp_unslash($post['greeting'] ?? '')),
+            'greeting' => sanitize_text_field(wp_unslash($post['greeting'] ?? '')),
+        ];
+    }
+
+    private function sanitizeAdvanced(array $post): array
+    {
+        return [
             'frontend_enabled'         => ! empty($post['frontend_enabled']),
             'delete_data_on_uninstall' => ! empty($post['delete_data_on_uninstall']),
         ];

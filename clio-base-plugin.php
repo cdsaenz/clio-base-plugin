@@ -3,7 +3,7 @@
  * Plugin Name: Clio Base Plugin
  * Plugin URI:  https://cliowebsites.com
  * Description: Starter skeleton for Clio plugins: settings, notices, admin/front assets, activation wiring.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      csdev@cliowebsites
  * Author URI:  https://cliowebsites.com
  * License:     GPL2

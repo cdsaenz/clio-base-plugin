@@ -12,9 +12,7 @@ defined('ABSPATH') || exit;
 /** @var Plugin $plugin */
 /** @var string $activeTab */
 
-$greeting        = (string) $plugin->option('greeting');
-$frontendEnabled = (bool) $plugin->option('frontend_enabled');
-$deleteOnUninst  = (bool) $plugin->option('delete_data_on_uninstall');
+$greeting = (string) $plugin->option('greeting');
 ?>
 <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
 
@@ -38,26 +36,6 @@ $deleteOnUninst  = (bool) $plugin->option('delete_data_on_uninstall');
                     );
                     ?>
                 </p>
-            </td>
-        </tr>
-
-        <tr>
-            <th scope="row"><?php esc_html_e('Front-end output', 'clio-base-plugin'); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="frontend_enabled" value="1" <?php checked($frontendEnabled); ?>>
-                    <?php esc_html_e('Enable', 'clio-base-plugin'); ?>
-                </label>
-            </td>
-        </tr>
-
-        <tr>
-            <th scope="row"><?php esc_html_e('Uninstall', 'clio-base-plugin'); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="delete_data_on_uninstall" value="1" <?php checked($deleteOnUninst); ?>>
-                    <?php esc_html_e('Delete all plugin data when the plugin is deleted', 'clio-base-plugin'); ?>
-                </label>
             </td>
         </tr>
 
