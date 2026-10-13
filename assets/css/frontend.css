@@ -1,0 +1,17 @@
+/* Clio Base Plugin — front-end styles */
+
+.clio-base-plugin-box {
+    border: 1px solid #ddd;
+    border-left: 4px solid #2271b1;
+    padding: 12px 16px;
+    margin: 1em 0;
+}
+
+.clio-base-plugin-greeting {
+    margin: 0 0 8px;
+    font-weight: 600;
+}
+
+.clio-base-plugin-details {
+    margin-top: 8px;
+}

@@ -1,0 +1,20 @@
+/* Clio Base Plugin — admin styles */
+
+/* ── Settings page ────────────────────────────────────────────────────────── */
+
+.clio-base-plugin-settings .clio-tab-content {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-top: none;
+    padding: 24px;
+}
+
+.clio-base-plugin-settings .clio-ping-result {
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.clio-base-plugin-settings .clio-ping-result.is-error {
+    color: #d63638;
+}
+
