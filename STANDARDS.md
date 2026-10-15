@@ -43,7 +43,7 @@ clio-foo-bar/
 │   ├── Plugin.php       singleton: paths, version, requires, boot(), option(), asset(), view()
 │   ├── Activator.php    activate / deactivate / idempotent install()
 │   ├── Notices.php      flash notices across redirects
-│   ├── Settings.php     option row, DEFAULTS, tabbed settings page, save handler
+│   ├── Settings.php     option row, DEFAULTS, settings page (tabs only if needed), save handler
 │   ├── Admin.php        admin enqueues, plugin row links
 │   ├── Ajax.php         admin-ajax handlers
 │   └── Frontend.php     front enqueues, shortcodes
@@ -64,6 +64,7 @@ Features go in their own class (`includes/Duplicator.php`, `includes/Feature/Thi
 - **Options**: one array option, `clio_foo_bar`, with defaults in `Settings::DEFAULTS`. Read through `$plugin->option('key')`.
 - **Menu**: one page, set by `Settings::PARENT`. **Tools** (`tools.php`) is the default. Use Settings (`options-general.php`) when the page is just config. Put it under the host plugin (`elementor`, `woocommerce`) when it extends that plugin. Give it its own top-level menu (`add_menu_page`) only when the plugin is massive.
 - **Settings page**: saves go through `admin-post.php`, a nonce, `manage_options`, and a per-tab sanitizer, then `Notices::add('Settings saved.')` and redirect. Don't add `updated=1`, or core shows a duplicate.
+- **Tabs are optional**: default to one plain settings page with one form. Split into tabs only when there's enough to split (several distinct groups of settings). The base plugin uses tabs to show the pattern, not because every plugin needs them.
 - **Tabs never wipe each other**: each tab has its own `<form>` and its own sanitizer, and the sanitizer returns **only that tab's keys**, which get merged over the stored row. A form posts nothing for fields it doesn't contain (an unchecked checkbox posts nothing either), so saving the whole row from `$_POST`, or one sanitizer covering every tab, resets the other tabs on each save. If you use the Settings API instead, register one `register_setting()` group per tab, because `options.php` nulls every field in the group that wasn't in the form.
 - **Notices**: `Notices::add($msg, $type)` for anything shown after a redirect. Messages allow only `strong/em/code/a`.
 - **Plugin row**: "Settings" goes first in the action links. Extra links (About, Support) go in the row meta.
